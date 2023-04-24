@@ -1,5 +1,5 @@
 import time
-
+import os
 import gradio as gr
 import requests
 from transformers import AutoTokenizer
@@ -10,6 +10,8 @@ headers = {
 }
 
 tokenizer = AutoTokenizer.from_pretrained("AI-Sweden/gpt-sw3-6.7b-v2-instruct-no-dolly-private")
+
+token = os.environ["auth_token_nlu"]
 
 with gr.Blocks() as demo:
     chatbot = gr.Chatbot()
@@ -51,14 +53,14 @@ with gr.Blocks() as demo:
             'presence_penalty': 1,
             'frequency_penalty': 0,
             'user': 'nlu',
-            'token': '',
+            'token': token,
         }
 
         print(p)
         print()
-        response = requests.post('https://gpt.ai.se/v1/engines/gpt-sw3/completions', headers=headers, json=json_data)
+
+        response = requests.post('http://localhost:8080/v1/engines/gpt-sw3/completions', headers=headers, json=json_data)
         bot_message = response.json()['choices'][0]['text']
-        print(bot_message)
 
         history[-1][1] = ""
         for character in bot_message:
@@ -74,5 +76,4 @@ with gr.Blocks() as demo:
     clear.click(lambda: None, None, chatbot, queue=False)
 
 demo.queue()
-demo.launch()
-
+demo.launch(server_name="0.0.0.0", server_port=8087)
