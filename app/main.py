@@ -61,7 +61,8 @@ with gr.Blocks() as demo:
         print(p)
         print()
 
-        response = requests.post('http://localhost:8080/v1/engines/gpt-sw3/completions', headers=headers, json=json_data)
+        response = requests.post('http://localhost:8080/v1/engines/gpt-sw3/completions', headers=headers,
+                                 json=json_data)
         bot_message = response.json()['choices'][0]['text']
 
         history[-1][1] = ""
@@ -78,4 +79,4 @@ with gr.Blocks() as demo:
     clear.click(lambda: None, None, chatbot, queue=False)
 
 demo.queue()
-app = gr.mount_gradio_app(app, demo)
+app = gr.mount_gradio_app(app, demo, path="")
