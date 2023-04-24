@@ -61,8 +61,7 @@ with gr.Blocks() as demo:
         print(p)
         print()
 
-        response = requests.post('http://localhost:8080/v1/engines/gpt-sw3/completions', headers=headers,
-                                 json=json_data)
+        response = requests.post('https://gpt.ai.se/v1/engines/gpt-sw3/completions', headers=headers, json=json_data)
         bot_message = response.json()['choices'][0]['text']
 
         history[-1][1] = ""
