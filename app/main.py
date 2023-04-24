@@ -3,6 +3,7 @@ import os
 import gradio as gr
 import requests
 from transformers import AutoTokenizer
+from fastapi import FastAPI
 
 headers = {
     'accept': 'application/json',
@@ -12,6 +13,7 @@ headers = {
 tokenizer = AutoTokenizer.from_pretrained("AI-Sweden/gpt-sw3-6.7b-v2-instruct-no-dolly-private")
 
 token = os.environ["auth_token_nlu"]
+app = FastAPI()
 
 with gr.Blocks() as demo:
     chatbot = gr.Chatbot()
@@ -76,4 +78,4 @@ with gr.Blocks() as demo:
     clear.click(lambda: None, None, chatbot, queue=False)
 
 demo.queue()
-demo.launch(server_name="0.0.0.0", server_port=8087)
+app = gr.mount_gradio_app(app, demo)
