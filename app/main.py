@@ -30,7 +30,7 @@ with gr.Blocks() as demo:
 
         result = ""
         for i in range(len(history)):
-            result += "User: " + history[i][0] + "<s>Bot:"
+            result += "Human: " + history[i][0] + "<s>Bot:"
             if history[i][1] is not None:
                 result += history[i][1] + "<s>"
 
@@ -51,9 +51,9 @@ with gr.Blocks() as demo:
             'stream': False,
             'logprobs': 0,
             'echo': False,
-            'stop': ["<s>", "User", "Bot"],
+            'stop': ["<s>", "User", "Bot", "Human"],
             'logit_bias': {},
-            'presence_penalty': 1,
+            'presence_penalty': 0,
             'frequency_penalty': 0,
             'user': 'nlu',
             'token': token,
