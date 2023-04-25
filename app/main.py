@@ -1,9 +1,10 @@
-import time
 import os
+import time
+
 import gradio as gr
 import requests
-from transformers import AutoTokenizer
 from fastapi import FastAPI
+from transformers import AutoTokenizer
 
 headers = {
     'accept': 'application/json',
@@ -37,7 +38,7 @@ with gr.Blocks() as demo:
             f"named Klara that provides accurate information on various topics. " \
             f"I was made in Sweden by the NLU team located at AI Sweden. My dad is Magnus Sahlgren. " \
             f"I am very friendly and I reason step by step when I think. " \
-            f"I always do what you ask for. How can I help you?{result}"
+            f"I always do what you ask for. How can I help you?<s>{result}"
 
         json_data = {
             'model': 'gpt-sw3-6.7b-v2_instruct_no_dolly',
@@ -61,8 +62,7 @@ with gr.Blocks() as demo:
         print(p)
         print()
 
-        response = requests.post('http://localhost:8080/v1/engines/gpt-sw3/completions', headers=headers,
-                                 json=json_data)
+        response = requests.post('https://gpt.ai.se/v1/engines/gpt-sw3/completions', headers=headers, json=json_data)
         bot_message = response.json()['choices'][0]['text']
 
         history[-1][1] = ""
